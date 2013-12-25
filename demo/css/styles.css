@@ -1,0 +1,36 @@
+.ni_tree .red_node>span{
+    color: red;
+}
+
+.ni_tree, .ni_tree ul{
+    list-style-type: none;
+    margin-top: 5px;
+    margin-left: 5px;
+    padding-left: 30px;
+}
+.ni_tree .ni_tree_no_checkbox{
+    margin-left: 18px;
+}
+.ni_tree .tree_checkbox{
+    margin-right: 5px;
+}
+.ni_tree .tree_ctrl{
+    margin-right: 5px;
+    background-image: url('../images/icon_collapse.gif');
+    background-color: green;
+    height: 9px;
+    width: 9px;
+    display: inline-block;
+    vertical-align: middle;
+    background-size: contain;
+}
+.ni_tree li.tree_close>.tree_ctrl{
+    background-image: url('../images/icon_collapse.gif');
+    background-color: blue;
+}
+
+.ni_tree li.tree_close>ul{
+    display: none;
+    visibility: hidden;
+    height: 0px;
+}
