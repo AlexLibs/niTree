@@ -24,7 +24,7 @@
     background-size: contain;
 }
 .ni_tree li.tree_close>.tree_ctrl{
-    background-image: url('../images/icon_collapse.gif');
+    background-image: url('../images/icon_expand.gif');
 }
 
 .ni_tree li.tree_close>ul{
