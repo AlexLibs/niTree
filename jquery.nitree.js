@@ -13,7 +13,7 @@
                     });
                     if(child.id){
                         child.attributes.id = child.id;
-                    };
+                    }
                     var $ul = $('<ul>', root ? {'class': 'ni_tree'} : {}),
                         $li = $('<li>', child.attributes),
                         $label = $('<span/>').html(child.label);
@@ -85,7 +85,7 @@
                 init_tree_open_close($(this));
                 disable_checkboxes_for_empty_lists($(this));
                 init_checking_behavior($(this));
-            })
+            });
         },
         //options example: {selected: false, leafsOnly: true} - get unselected leafs
         get: function(options){
@@ -94,13 +94,13 @@
             var $lis = this;
             if(options.leafsOnly){
                 $lis = this.find('li:not(:has(ul))');
-            };
+            }
             var $treeCheckboxes;
             if(options.selected){
                 $treeCheckboxes = $lis.find('.tree_checkbox:checked');
             } else {
                 $treeCheckboxes = $lis.find('.tree_checkbox:not(:checked)');
-            };
+            }
             return $treeCheckboxes.map(function(){
                 return $(this).parent().prop('id');
             }).toArray();
