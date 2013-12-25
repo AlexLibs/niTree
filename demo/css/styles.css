@@ -17,7 +17,6 @@
 .ni_tree .tree_ctrl{
     margin-right: 5px;
     background-image: url('../images/icon_collapse.gif');
-    background-color: green;
     height: 9px;
     width: 9px;
     display: inline-block;
@@ -26,7 +25,6 @@
 }
 .ni_tree li.tree_close>.tree_ctrl{
     background-image: url('../images/icon_collapse.gif');
-    background-color: blue;
 }
 
 .ni_tree li.tree_close>ul{
