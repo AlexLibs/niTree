@@ -107,12 +107,13 @@
                     var $parentNode = $(this).find('#' + options.parentNodeID);
                     //mark the existing nodes under the parentNode so we don't effect them again
                     $parentNode.find('li').addClass(options.inner_util_class);
+
+                    //append the subtree and add functionality
                     addNodes($parentNode, options.treeData, false);
                     init_tree_open_close($parentNode, options.inner_util_class);
                     disable_checkboxes_for_empty_lists($parentNode);
                     init_checking_behavior($parentNode);
-                    /*
-                    */
+
                     //remove the mark the existing nodes
                     $parentNode.find('li').removeClass(options.inner_util_class);
                 }
