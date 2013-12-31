@@ -2,9 +2,9 @@ var treeData1 = firstTreeData();
 var treeData2 = secondTreeData();
 var subTreeData = subTreeData();
 
-var tree1 = $('#tree1').niTree({treeData: treeData1})
-    ,$log1 = $('#log1');
-tree1.niTree({treeData: subTreeData, parentNodeID: 'tree1_node0_1'})
+var tree1 = $('#tree1').niTree({treeData: treeData1}),
+    $log1 = $('#log1');
+tree1.niTree({treeData: subTreeData, parentNodeID: 'tree1_node0_1'});
 
 $('#btn_expand1').on('click', function(){
     tree1.niTree('expandAll');
@@ -25,8 +25,8 @@ $('#btn_unchecked_leafs1').on('click', function(){
     $log1.prepend('[' + tree1.niTree('get', {selected: false, leafsOnly: true}).join(', ') + ']\n');
 });
 
-var tree2 = $('#tree2').niTree({treeData: treeData2})
-    ,$log2 = $('#log2');
+var tree2 = $('#tree2').niTree({treeData: treeData2}),
+    $log2 = $('#log2');
 $('#btn_expand2').on('click', function(){
     tree2.niTree('expandAll');
 });
@@ -169,7 +169,7 @@ function firstTreeData(){
                     attributes: {
                         'class': ['class_node1_4_a'],
                         'data-type': 'site_brand_list_child'
-                    },
+                    }
                 }
             ]
         }
