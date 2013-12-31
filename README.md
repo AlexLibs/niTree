@@ -14,7 +14,7 @@ jQuery plugin implementing Tree/Forest with checkboxes (including indeterminate 
 * JSON as a source
 * check on load some of the checkboxes via the JSON source
 * setting attributes (id, classes, data or any custom ones) to the nodes via JSON source
-* Adding a subtree to a node (new*)
+* Adding a subtree to a node
 
 # Demo
 
