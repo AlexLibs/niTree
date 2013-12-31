@@ -1,51 +1,51 @@
 var treeData1 = firstTreeData();
 var treeData2 = secondTreeData();
 var subTreeData = subTreeData();
+$(function(){
+    var tree1 = $('#tree1').niTree({treeData: treeData1}),
+        $log1 = $('#log1');
+    tree1.niTree({treeData: subTreeData, parentNodeID: 'tree1_node0_1'});
 
-var tree1 = $('#tree1').niTree({treeData: treeData1}),
-    $log1 = $('#log1');
-tree1.niTree({treeData: subTreeData, parentNodeID: 'tree1_node0_1'});
+    $('#btn_expand1').on('click', function(){
+        tree1.niTree('expandAll');
+    });
+    $('#btn_collapse1').on('click', function(){
+        tree1.niTree('collapseAll');
+    });
+    $('#btn_checked1').on('click', function(){
+        $log1.prepend('[' + tree1.niTree('get', {selected: true}).join(', ') + ']\n');
+    });
+    $('#btn_checked_leafs1').on('click', function(){
+        $log1.prepend('[' + tree1.niTree('get', {selected: true, leafsOnly: true}).join(', ') + ']\n');
+    });
+    $('#btn_unchecked1').on('click', function(){
+        $log1.prepend('[' + tree1.niTree('get', {selected: false}).join(', ') + ']\n');
+    });
+    $('#btn_unchecked_leafs1').on('click', function(){
+        $log1.prepend('[' + tree1.niTree('get', {selected: false, leafsOnly: true}).join(', ') + ']\n');
+    });
 
-$('#btn_expand1').on('click', function(){
-    tree1.niTree('expandAll');
+    var tree2 = $('#tree2').niTree({treeData: treeData2}),
+        $log2 = $('#log2');
+    $('#btn_expand2').on('click', function(){
+        tree2.niTree('expandAll');
+    });
+    $('#btn_collapse2').on('click', function(){
+        tree2.niTree('collapseAll');
+    });
+    $('#btn_checked2').on('click', function(){
+        $log2.prepend('[' + tree2.niTree('get', {selected: true}).join(', ') + ']\n');
+    });
+    $('#btn_checked_leafs2').on('click', function(){
+        $log2.prepend('[' + tree2.niTree('get', {selected: true, leafsOnly: true}).join(', ') + ']\n');
+    });
+    $('#btn_unchecked2').on('click', function(){
+        $log2.prepend('[' + tree2.niTree('get', {selected: false}).join(', ') + ']\n');
+    });
+    $('#btn_unchecked_leafs2').on('click', function(){
+        $log2.prepend('[' + tree2.niTree('get', {selected: false, leafsOnly: true}).join(', ') + ']\n');
+    });
 });
-$('#btn_collapse1').on('click', function(){
-    tree1.niTree('collapseAll');
-});
-$('#btn_checked1').on('click', function(){
-    $log1.prepend('[' + tree1.niTree('get', {selected: true}).join(', ') + ']\n');
-});
-$('#btn_checked_leafs1').on('click', function(){
-    $log1.prepend('[' + tree1.niTree('get', {selected: true, leafsOnly: true}).join(', ') + ']\n');
-});
-$('#btn_unchecked1').on('click', function(){
-    $log1.prepend('[' + tree1.niTree('get', {selected: false}).join(', ') + ']\n');
-});
-$('#btn_unchecked_leafs1').on('click', function(){
-    $log1.prepend('[' + tree1.niTree('get', {selected: false, leafsOnly: true}).join(', ') + ']\n');
-});
-
-var tree2 = $('#tree2').niTree({treeData: treeData2}),
-    $log2 = $('#log2');
-$('#btn_expand2').on('click', function(){
-    tree2.niTree('expandAll');
-});
-$('#btn_collapse2').on('click', function(){
-    tree2.niTree('collapseAll');
-});
-$('#btn_checked2').on('click', function(){
-    $log2.prepend('[' + tree2.niTree('get', {selected: true}).join(', ') + ']\n');
-});
-$('#btn_checked_leafs2').on('click', function(){
-    $log2.prepend('[' + tree2.niTree('get', {selected: true, leafsOnly: true}).join(', ') + ']\n');
-});
-$('#btn_unchecked2').on('click', function(){
-    $log2.prepend('[' + tree2.niTree('get', {selected: false}).join(', ') + ']\n');
-});
-$('#btn_unchecked_leafs2').on('click', function(){
-    $log2.prepend('[' + tree2.niTree('get', {selected: false, leafsOnly: true}).join(', ') + ']\n');
-});
-
 
 function firstTreeData(){
     return [
@@ -64,16 +64,16 @@ function firstTreeData(){
                         'class': ['class_node0_1_a', 'class_node0_1_b', 'bold'],
                         'data-type': 'site_brand_list_child'
                     }/*,
-                    children: [
-                        {
-                            label: 'Node0_1_1',
-                            id: 'tree1_node0_1_1',
-                            attributes: {
-                                'class': ['class_node0_1_1_a', 'class_node0_1_1_b'],
-                                'data-type': 'site_brand_list_child'
-                            }
-                        }
-                    ]*/
+                 children: [
+                 {
+                 label: 'Node0_1_1',
+                 id: 'tree1_node0_1_1',
+                 attributes: {
+                 'class': ['class_node0_1_1_a', 'class_node0_1_1_b'],
+                 'data-type': 'site_brand_list_child'
+                 }
+                 }
+                 ]*/
                 }
             ]
         },
