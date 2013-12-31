@@ -2,7 +2,8 @@
     var methods = {
         init : function(options) {
             var defaults = {
-                treeData: [{'label': 'Empty tree'}]
+                treeData: [{'label': 'Empty tree'}],
+                inner_util_class: 'ni_inner_util_class'
             };
             options = $.extend(defaults, options);
             function addNodes($el, treeData, root){
@@ -23,21 +24,35 @@
                     child.children && addNodes($li, child.children);
                 });
             }
-            function init_tree_open_close($tree){
-                //add controls
-                var $li = $tree.find('li'),
-                    li_attr = {'type': 'checkbox', 'class': 'tree_checkbox'};
-                $tree.find('li')
+            function init_tree_open_close($parentElement, except_class){
+                //get the relevant elemants
+                var $elements = $parentElement.find('li');
+                if(except_class){
+                    $elements = $elements.filter(':not(.' + except_class + ')');
+                }
+
+                //append checkboxes
+                $elements
                     .filter(':not(.ni_tree_no_checkbox)')
-                    .prepend($('<input>', li_attr))
-                    .end()
+                    .prepend($('<input>', {'type': 'checkbox', 'class': 'ni_tree_checkbox'}));
+
+
+                //open/close control should be appended also to the $parentElement if it didn't have subtree before
+                if(!$parentElement.closest('ul').hasClass('has_subtree')){
+                    $parentElement.addClass('has_subtree');
+                    $elements = $elements.add($parentElement);
+                }
+
+                //append open/close control
+                $elements
                     .has('ul')
-                    .prepend($('<span>', {'class': 'tree_ctrl'}))
+                    .prepend($('<span>', {'class': 'ni_tree_ctrl'}))
                     .parent().addClass('has_subtree');
+
                 //open/close functionality for the tree
-                $tree.find('.tree_ctrl').click(function(){
-                    $(this).parent()
-                        .toggleClass('tree_close');
+                $elements.find('.ni_tree_ctrl').on('click.ni_tree_open_close', function(){
+                    $(this).closest('li')
+                        .toggleClass('ni_tree_close');
                 });
             }
 
@@ -45,17 +60,17 @@
             function disable_checkboxes_for_empty_lists($tree){
                 var $empty_lists = $tree.find('li')
                     .has('li')
-                    .filter(':not(:has(li .tree_checkbox))');
-                $empty_lists.children('.tree_checkbox').prop('disabled', true);
-                $empty_lists.children('.tree_checkbox')
-                    .removeClass('tree_checkbox')
-                    .addClass('tree_checkbox_disabled');
+                    .filter(':not(:has(li .ni_tree_checkbox))');
+                $empty_lists.children('.ni_tree_checkbox').prop('disabled', true);
+                $empty_lists.children('.ni_tree_checkbox')
+                    .removeClass('ni_tree_checkbox')
+                    .addClass('ni_tree_checkbox_disabled');
             }
 
             function init_checking_behavior($tree){
-                $tree.find('.tree_checkbox').change(function(){
+                $tree.find('.ni_tree_checkbox').on('change.ni_tree_checking_behavior', function(){
                     var checked = $(this).is(':checked');
-                    $(this).parent().find('.tree_checkbox')
+                    $(this).parent().find('.ni_tree_checkbox')
                         .prop('checked', checked)
                         .prop('indeterminate', false);
 
@@ -63,11 +78,11 @@
                     $(this).parents('li')
                         .each(function(){
                             var $container_li = $(this).parents('li:first');
-                            var $containers_checkboxes = $container_li.children('input.tree_checkbox');
+                            var $containers_checkboxes = $container_li.children('input.ni_tree_checkbox');
                             $containers_checkboxes.prop("indeterminate", false);
-                            if ($container_li.find('li input.tree_checkbox:not(:checked)').length) {
+                            if ($container_li.find('li input.ni_tree_checkbox:not(:checked)').length) {
                                 $containers_checkboxes.prop('checked', false);
-                                if ($container_li.find('li input.tree_checkbox:checked').length) {
+                                if ($container_li.find('li input.ni_tree_checkbox:checked').length) {
                                     $containers_checkboxes.prop("indeterminate", true);
                                 }
                             } else {
@@ -75,16 +90,31 @@
                             }
                         });
                 });
-                $tree.find('li.ni_tree_init_checked>.tree_checkbox')
+                $tree.find('li.ni_tree_init_checked>.ni_tree_checkbox')
                     .prop('checked', true)
                     .change();
             }
             return this.each(function() {
-                addNodes($(this), options.treeData, true);
+                if(!options.parentNodeID){
+                    addNodes($(this), options.treeData, true);
 
-                init_tree_open_close($(this));
-                disable_checkboxes_for_empty_lists($(this));
-                init_checking_behavior($(this));
+                    init_tree_open_close($(this));
+                    disable_checkboxes_for_empty_lists($(this));
+                    init_checking_behavior($(this));
+                } else {
+                    var $parentNode = $(this).find('#' + options.parentNodeID);
+                    //mark the existing nodes under the parentNode so we don't effect them again
+                    $grandpaNode = $parentNode
+                    $parentNode.find('li').addClass(options.inner_util_class);
+                    addNodes($parentNode, options.treeData, false);
+                    init_tree_open_close($parentNode, options.inner_util_class);
+                    disable_checkboxes_for_empty_lists($parentNode);
+                    init_checking_behavior($parentNode);
+                    /*
+                    */
+                    //remove the mark the existing nodes
+                    $parentNode.find('li').removeClass(options.inner_util_class);
+                }
             });
         },
         //options example: {selected: false, leafsOnly: true} - get unselected leafs
@@ -97,20 +127,20 @@
             }
             var $treeCheckboxes;
             if(options.selected){
-                $treeCheckboxes = $lis.find('.tree_checkbox:checked');
+                $treeCheckboxes = $lis.find('.ni_tree_checkbox:checked');
             } else {
-                $treeCheckboxes = $lis.find('.tree_checkbox:not(:checked)');
+                $treeCheckboxes = $lis.find('.ni_tree_checkbox:not(:checked)');
             }
             return $treeCheckboxes.map(function(){
                 return $(this).parent().prop('id');
             }).toArray();
         },
         expandAll : function() {
-            this.find('.has_subtree').children('li').removeClass('tree_close');
+            this.find('.has_subtree').children('li').removeClass('ni_tree_close');
             return this;
         },
         collapseAll : function() {
-            this.find('.has_subtree').children('li').addClass('tree_close');
+            this.find('.has_subtree').children('li').addClass('ni_tree_close');
             return this;
         }
     };
