@@ -21,7 +21,9 @@
                     $li.append($label);
                     $ul.append($li);
                     $el.append($ul);
-                    child.children && addNodes($li, child.children);
+                    if(child.children){
+                        addNodes($li, child.children);
+                    }
                 });
             }
             function init_tree_open_close($parentElement, except_class){
@@ -104,7 +106,6 @@
                 } else {
                     var $parentNode = $(this).find('#' + options.parentNodeID);
                     //mark the existing nodes under the parentNode so we don't effect them again
-                    $grandpaNode = $parentNode
                     $parentNode.find('li').addClass(options.inner_util_class);
                     addNodes($parentNode, options.treeData, false);
                     init_tree_open_close($parentNode, options.inner_util_class);
