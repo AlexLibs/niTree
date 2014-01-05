@@ -39,8 +39,8 @@
                     .prepend($('<input>', {'type': 'checkbox', 'class': 'ni_tree_checkbox'}));
 
 
-                //open/close control should be appended also to the $parentElement if it didn't have subtree before
-                if(!$parentElement.closest('ul').hasClass('has_subtree')){
+                //if it's about appending a subtree (e.i. there is except_class) then open/close control should be appended also to the $parentElement if it didn't have subtree before
+                if(except_class && !$parentElement.closest('ul').hasClass('has_subtree')){
                     $parentElement.addClass('has_subtree');
                     $elements = $elements.add($parentElement);
                 }
@@ -59,14 +59,17 @@
             }
 
             //disable the checkboxes of the empty lists (empty = doesn't have li-children with checkboxes)
-            function disable_checkboxes_for_empty_lists($tree){
-                var $empty_lists = $tree.find('li')
+            function disable_checkboxes_for_empty_lists($tree, number_of_effected){
+                var $empty_lists = $tree.find('li').add($tree) //add $tree itself so when the subtree without checkboxes is added the $tree's checkbox will be disabled
                     .has('li')
                     .filter(':not(:has(li .ni_tree_checkbox))');
                 $empty_lists.children('.ni_tree_checkbox').prop('disabled', true);
                 $empty_lists.children('.ni_tree_checkbox')
                     .removeClass('ni_tree_checkbox')
                     .addClass('ni_tree_checkbox_disabled');
+                if($empty_lists.length && (number_of_effected != $empty_lists.length)){
+                    disable_checkboxes_for_empty_lists($tree, $empty_lists.length);
+                }
             }
 
             function init_checking_behavior($tree){
@@ -111,7 +114,7 @@
                     //append the subtree and add functionality
                     addNodes($parentNode, options.treeData, false);
                     init_tree_open_close($parentNode, options.inner_util_class);
-                    disable_checkboxes_for_empty_lists($parentNode);
+                    disable_checkboxes_for_empty_lists($(this));//$(this) - because appending leafs can effect parents
                     init_checking_behavior($parentNode);
 
                     //remove the mark the existing nodes
@@ -121,7 +124,7 @@
         },
         //options example: {selected: false, leafsOnly: true} - get unselected leafs
         get: function(options){
-            var defaults = {selected: true};
+            var defaults = {selected: true, attributeToSelect: 'id'};
             options = $.extend(defaults, options);
             var $lis = this;
             if(options.leafsOnly){
@@ -134,7 +137,7 @@
                 $treeCheckboxes = $lis.find('.ni_tree_checkbox:not(:checked)');
             }
             return $treeCheckboxes.map(function(){
-                return $(this).parent().prop('id');
+                return $(this).parent().attr(options.attributeToSelect);
             }).toArray();
         },
         expandAll : function() {
